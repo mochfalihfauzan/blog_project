@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory,
+        Sluggable;
+
 
     // protected $fillable = [
     //     'title',
@@ -52,5 +55,20 @@ class Post extends Model
     public function author()    //user_id di ganti author
     {
         return $this->belongsTo(User::class, 'user_id');    //author menjadi alias dari user
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    // sluggable
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
     }
 }
